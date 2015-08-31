@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>AudioHax</title>
+	<link rel="stylesheet" href="./css/normalize.css">
+	<link rel="stylesheet" href="./css/skeleton.css">
+	<style>
+	  /* Override for jsfx controls, for now */
+		html, body {
+			margin: 0px;
+			padding: 0px;
+			height: 100%;
+		}
+		.container {
+			width: 90%;
+			margin-top: 40px;
+		}
+		table {
+			float: left;
+			width: 48%;
+			margin: 1%;
+		}
+	</style>
+</head>
+<body>
+	<section class="container">
+	<h1>AudioHax</h1>
+	<p>Press spacebar to start/stop the sequence.</p>
+	<div class="row">
+		<canvas id="draw-canvas" width="200" height="200"></canvas>
+	</div>
+
+	<hr>
+	<h4><a tabindex="-1" href="http://egonelbre.com/tags/jsfx">jsfx</a> controls below</h4>
+	<div id="button-panel">
+	    <div id="sample-generators" class="button-set"></div>
+	    <div class="button-set">
+	        <button onclick="jsfxgui.reset()">Reset</button>
+	        <button onclick="console.log(jsfxgui.randomize())">Randomize</button>
+	        <button onclick="console.log(jsfxgui.play())">Play</button>
+	        <button onclick="jsfxgui.paramsToLibrary()">To Library</button>
+	    </div>
+	</div>
+	<div id="config-panel"></div>
+
+	<div style="display:none">
+		<h3>Library</h3>
+		<div id="library">
+		</div>
+
+		<h3>Log</h3>
+		<div id="log">generate: 38ms<br>generate: 35ms<br>generate: 38ms<br>generate: 71ms<br>generate: 110ms<br>generate: 23ms<br>library initialized<br>
+		  jsfx... loading...
+		</div>
+	</div>
+	</section>
+
+	<script src="./js/lib/blip.js"></script>
+	<script src="./js/lib/riffwave.js"></script>
+	<script src="./js/lib/jsfx/audio.js"></script>
+	<script src="./js/lib/jsfx/jsfx.js"></script>
+	<script src="./js/lib/jsfx/jsfxlib.js"></script>
+	<script src="./js/lib/jsfx/jsfxgui.js"></script>
+	<script src="./js/audio-hax.js"></script>
+</body>
+</html>
