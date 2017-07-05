@@ -12,3 +12,4 @@ I've hacked the original versions of these libraries to play with each other:
 * [blip.js](http://jshanley.github.io/blip/)
 * [jsfx](https://github.com/loov/jsfx)
 * [litsynth](https://github.com/padenot/litsynth)
+* [riffwave](https://gist.github.com/hackNightly/3776503)
