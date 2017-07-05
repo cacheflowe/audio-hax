@@ -20,6 +20,34 @@ function play(){
 
 
 /////////////////////////////////////////////////////////////////////
+// DELAY FOR LITSYNTHS
+// via: http://sonoport.github.io/sampler-and-delaynode.html
+/////////////////////////////////////////////////////////////////////
+function addDelayNode(audioContext, _delayTime, feedback) {
+
+    var delay = audioContext.createDelay();
+    delay.delayTime.value = _delayTime;
+
+    var _feedback = audioContext.createGain();
+    _feedback.gain.value = feedback;
+
+    var filter = audioContext.createBiquadFilter();
+    filter.frequency.value = 4000;
+
+    filter.connect(delay);
+    delay.connect(_feedback);
+    _feedback.connect(filter);
+    delay.connect(audioContext.destination);
+
+    return delay;
+}
+
+var delayOne = addDelayNode(blip.getContext(), 0.3, 0.2);
+delayOne.connect(blip.getContext().destination);
+
+
+
+/////////////////////////////////////////////////////////////////////
 // LITSYNTH-GENERATED INSTRUMENTS
 /////////////////////////////////////////////////////////////////////
 function note2freq(note) {
@@ -37,6 +65,7 @@ Bass.play = function(audioContext, t, note, length, oscType) {
   g.gain.setValueAtTime(1.0, t);
   g.gain.setTargetAtTime(0.0, t, length);
   o.connect(g);
+  g.connect(delayOne);
   g.connect(audioContext.destination);
   o.start(t);
   // o.stop(t + 2); // this kills subsequent play() calls
@@ -144,8 +173,8 @@ var melodic = blip.loop()
           if (blip.chance(1.5/2)) soundLib[i].play(0, { 'rate': d.tune });
         } else if(blip.sample('bass-vocal') == soundLib[i].sample() && d.step % 8 == 0) {
           soundLib[i].play(0, { 'rate': blip.random(0.6, 1.4) });
-        // } else if(blip.sample('riffwave-tone') == soundLib[i].sample() && d.step % 2 == 0) {
-        //   soundLib[i].play(0, { 'rate': d.tune/2 });
+        } else if(blip.sample('riffwave-tone') == soundLib[i].sample() && d.step % 2 == 0) {
+          soundLib[i].play(0, { 'rate': d.tune/2 });
         } else {
           // randomly play the sound
           if (blip.chance(1/32)) soundLib[i].play(0, { 'rate': blip.random(0.2, 1.4) });
@@ -156,18 +185,17 @@ var melodic = blip.loop()
         Bass.play(blip.getContext(), 0, 36 + d.step, 0.05);
       }
       if(d.step % 2 == 1) {
-        Bass.play(blip.getContext(), 0, 48 - d.step, 0.05, 'sine');
+        // Bass.play(blip.getContext(), 0, 48 - d.step, 0.05, 'sine');
       }
 });
 var playing = false;
-document.addEventListener('keydown', function(e){
-  if(e.keyCode == 32) {
-    e.preventDefault();
-    e.stopPropagation();
-    if(playing) melodic.stop();
-    else melodic.start();
-    playing = !playing;
-  }
+document.addEventListener('click', function(e){
+  if(e.target.nodeName.toLowerCase().match(/button|input/i)) return;
+  e.preventDefault();
+  e.stopPropagation();
+  if(playing) melodic.stop();
+  else melodic.start();
+  playing = !playing;
 })
 
 
