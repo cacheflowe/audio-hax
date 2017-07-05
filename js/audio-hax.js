@@ -189,14 +189,24 @@ var melodic = blip.loop()
       }
 });
 var playing = false;
-document.addEventListener('click', function(e){
+function togglePlay(e) {
   if(e.target.nodeName.toLowerCase().match(/button|input/i)) return;
   e.preventDefault();
   e.stopPropagation();
   if(playing) melodic.stop();
   else melodic.start();
   playing = !playing;
-})
+}
+function togglePlayClick(e) {
+  document.body.removeEventListener('click', togglePlayTouch);
+  togglePlay(e);
+}
+function togglePlayTouch(e) {
+  document.body.removeEventListener('click', togglePlayClick);
+  togglePlay(e);
+}
+document.body.addEventListener('click', togglePlayClick);
+document.body.addEventListener('touchstart', togglePlayTouch);
 
 
 
